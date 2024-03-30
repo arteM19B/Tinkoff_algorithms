@@ -1,3 +1,6 @@
+// не заходит, wa на 2 тесте.
+
+
 #include <iostream>
 #include <vector>
 
@@ -8,13 +11,11 @@ vector<vector<int>> g;
 vector<int> tin, tout;
 
 void dfs(int v) {
-    tin[v] = timer;
-    timer++;
+    tin[v] = timer++;
     for (int u : g[v]) {
         dfs(u);
     }
-    tout[v] = timer;
-    timer++;
+    tout[v] = timer++;
 }
 
 bool isParent(int v, int u) {
@@ -31,9 +32,9 @@ int main() {
     g.resize(n);
     tin.resize(n); tout.resize(n);
     for (int i = 0; i < n; i++) {
-        if (i == 0) continue;
         int x;
         cin >> x;
+        if (x == 0) continue;
         g[x - 1].push_back(i);
     }
     dfs(0);
@@ -42,12 +43,13 @@ int main() {
     for (int i = 0; i < k; i++) {
         int v, u;
         cin >> v >> u;
-        cout << tin[v] << tout[v] << "\n" << tin[u] << tout[u] << "\n";
+        v--;
+        u--;
         cout << isParent(v, u) << "\n";
     }
 }
 //6
-//0 1 1 2 3 3
+//0 1 1 2 3  3
 //5
 //4 1
 //1 4
