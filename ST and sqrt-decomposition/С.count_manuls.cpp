@@ -6,18 +6,13 @@ using namespace std;
 using ll = long long;
 
 const int MAXN = 1e5;
-vector<vector<int>> g(MAXN);
 
-vector<int> heavy_d(MAXN);
-vector<int> a(MAXN);
-int c;
-
-bool is_heavy(int v) {
+bool is_heavy(int v, vector<vector<int>>& g, int& c) {
     return g[v].size() > c;
 }
 
-void add(int v, int x) {
-    if (is_heavy(v)) {
+void add(int v, int x, vector<int>& heavy_d, vector<vector<int>>& g, vector<int>& a, int& c) {
+    if (is_heavy(v, g, c)) {
         heavy_d[v] += x;
     } else {
         for (int to : g[v]) {
@@ -26,7 +21,7 @@ void add(int v, int x) {
     }
 }
 
-int query(int v) {
+int query(int v, vector<vector<int>>& g, vector<int>& heavy_d, vector<int>& a) {
     int ans = a[v];
     for (auto to : g[v]) {
         ans += heavy_d[to];
@@ -35,6 +30,11 @@ int query(int v) {
 }
 
 int main() {
+    vector<vector<int>> g(MAXN);
+    vector<int> heavy_d(MAXN);
+    vector<int> a(MAXN);
+    int c;
+
     int N, m, q;
     cin >> N >> m >> q;
     for (int i = 0; i < N; i++) {
@@ -58,12 +58,14 @@ int main() {
         if (type == '?') {
             int k;
             cin >> k;
-            cout << query(k) << endl;
+            k--;
+            cout << query(k, g, heavy_d, a) << endl;
         } else {
             int u, x;
+            u--;
             cin >> u >> x;
             u--;
-            add(u, x);
+            add(u, x, heavy_d, g, a, c);
         }
     }
 
